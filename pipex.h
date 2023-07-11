@@ -6,7 +6,7 @@
 /*   By: minjeon2 <qwer10897@naver.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 20:31:29 by minjeon2          #+#    #+#             */
-/*   Updated: 2023/07/11 16:10:36 by minjeon2         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:41:07 by minjeon2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 # define STDOUT 1
 # define READ 0
 # define WRITE 1
+# define STDERR 2
 
 typedef struct	s_args_saver
 {
-
     int		infile;
 	char	**cmd1;
 	char	**cmd2;
@@ -34,7 +34,15 @@ typedef struct	s_args_saver
 
 } t_args_saver;
 
+typedef struct s_pipe_info
+{
+	int	pipe_fds[2];
+	int	status;
+	int	pid1;
+	int	pid2;
+} t_pipe_info;
+
 void	manage_input_args(t_args_saver *cmd_saver, char ** argv, char **envp);
 int		set_path(char **envp, t_args_saver *args_saver, int cmd);
-void	print_error();
+int		print_error();
 #endif
