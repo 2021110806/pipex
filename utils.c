@@ -1,8 +1,16 @@
 #include "pipex.h"
 
-int	print_error()
+int	print_error(int is_file_related, char* file_name)
 {
-	perror("pipex:");
+	if (is_file_related)
+	{
+		ft_putstr_fd("pipex: ", STDERR);
+		ft_putstr_fd(file_name, STDERR);
+		ft_putstr_fd(": ", STDERR);
+		perror(0);
+		return (0);
+	}
+	perror("pipex: ");
 	return (0);
 }
 
@@ -29,8 +37,6 @@ int	set_path(char **envp, t_args_saver *args_saver, int cmd)
 	int		i;
 	char	**path_list;
 	char	*target_path;
-	char	*res;
-	char	*path_finded;
 
 	path_list = ft_split(find_path_startpoint(envp), ':');
 	target_path = ft_strdup("/");
@@ -52,10 +58,21 @@ int	set_path(char **envp, t_args_saver *args_saver, int cmd)
 	return (0);
 }
 
-void	manage_input_args(t_args_saver *cmd_saver, char **argv, char **envp)
+int	manage_input_args(t_args_saver *cmd_saver, char **argv, int file_checker)
 {
-	cmd_saver->infile = open("./infile", O_RDONLY);
+	if (!file_checker)
+	{
+		cmd_saver->infile = open(argv[1], O_RDONLY);
+		if (cmd_saver-> infile < 0)
+			return (print_error(1, argv[1]));
+	}
 	cmd_saver->cmd1 = ft_split(argv[2],' ');
 	cmd_saver->cmd2 = ft_split(argv[3],' ');
-	cmd_saver->outfile = open("./outfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (file_checker)
+	{
+		cmd_saver->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cmd_saver-> outfile < 0)
+			return (print_error(1, argv[4]));
+	}
+	return (1);
 }
