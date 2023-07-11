@@ -4,8 +4,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_args_saver	cmd_saver;
 	int				pipe_fds[2];
-	pid_t			pid;
-	int				status;
+	pid_t			pid1;
+	pid_t			pid2;
+	int				status1;
+	int				status2;
 
 	if (argc != 5)
 	{
@@ -17,28 +19,36 @@ int	main(int argc, char **argv, char **envp)
 	dup2(cmd_saver.outfile, STDOUT);
 	if (pipe(pipe_fds))
 		print_error();
-	pid = fork();
-	if (pid == -1)
-		print_error();
-	else if (pid == 0)
+	pid1 = fork();
+	if (pid1 != 0)
 	{
-		close(pipe_fds[READ]);
-		if (dup2(cmd_saver.infile, STDIN) == -1)
-			print_error();
-		if (dup2(pipe_fds[WRITE], STDOUT) == -1)
-			print_error();
-		if (!set_path(envp, &cmd_saver, 1))
+		pid2 = fork();
+		if (pid2 != 0)
 		{
-			ft_putstr_fd("pipex :",1);
-			ft_putstr_fd("command not found",1);
-			ft_putstr_fd(cmd_saver.cmd1, 1);
+			//waitpid(pid1,&status1,0);
+			waitpid(pid2,&status2,0);
+			printf("status1 : %d\n",WIFEXITED(status1));
+			printf("status2 : %d\n",WIFEXITED(status2));
 		}
-		if (execve(cmd_saver.path, cmd_saver.cmd1, envp) == -1)
-			print_error();
+		else
+		{
+			close(pipe_fds[READ]);
+			if (dup2(cmd_saver.infile, STDIN) == -1)
+				print_error();
+			if (dup2(pipe_fds[WRITE], STDOUT) == -1)
+				print_error();
+			if (!set_path(envp, &cmd_saver, 1))
+			{
+				ft_putstr_fd("pipex :",1);
+				ft_putstr_fd("command not found",1);
+				ft_putstr_fd(cmd_saver.cmd1[0], 1);
+			}
+			if (execve(cmd_saver.path, cmd_saver.cmd1, envp) == -1)
+				print_error();
+		}
 	}
 	else
 	{
-		wait(&status);
 		close(pipe_fds[WRITE]);
 		if (dup2(pipe_fds[READ], STDIN) == -1)
 			print_error();
@@ -48,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			ft_putstr_fd("pipex :",1);
 			ft_putstr_fd("command not found",1);
-			ft_putstr_fd(cmd_saver.cmd1, 1);
+			ft_putstr_fd(cmd_saver.cmd2[0], 1);
 		}
 		if (execve(cmd_saver.path, cmd_saver.cmd2, envp) == -1)
 			print_error();
