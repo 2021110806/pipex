@@ -6,7 +6,7 @@
 /*   By: minjeon2 <qwer10897@naver.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 20:31:29 by minjeon2          #+#    #+#             */
-/*   Updated: 2023/07/11 15:06:33 by minjeon2         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:10:36 by minjeon2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ typedef struct	s_args_saver
 
 void	manage_input_args(t_args_saver *cmd_saver, char ** argv, char **envp);
 int		set_path(char **envp, t_args_saver *args_saver, int cmd);
+void	print_error();
 #endif

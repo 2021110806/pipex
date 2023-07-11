@@ -1,5 +1,10 @@
 #include "pipex.h"
 
+void	print_error()
+{
+	perror("pipex:");
+}
+
 int	set_path(char **envp, t_args_saver *args_saver, int cmd)
 {
 	int		i;
