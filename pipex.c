@@ -6,7 +6,7 @@
 /*   By: minjeon2 <qwer10897@naver.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:33:34 by minjeon2          #+#    #+#             */
-/*   Updated: 2023/07/12 03:38:03 by minjeon2         ###   ########.fr       */
+/*   Updated: 2023/07/13 17:12:01 by minjeon2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	excute_cmd1(t_pipe_info pipe_info, char **envp, char **argv)
 	{
 		ft_putstr_fd("pipex: ", STDERR);
 		ft_putstr_fd(cmd_saver.cmd1[0], STDERR);
-		ft_putstr_fd(": command not found", STDERR);
+		ft_putstr_fd(": command not found: ", STDERR);
 		ft_putstr_fd("\n", STDERR);
-		return (0);
+		exit(1);
 	}
 	if (execve(cmd_saver.path, cmd_saver.cmd1, envp) == -1)
 		return (print_error(0, 0, 0));
@@ -50,10 +50,10 @@ int	excute_cmd2(t_pipe_info pipe_info, char **envp, char **argv)
 	if (!set_path(envp, &cmd_saver, 2))
 	{
 		ft_putstr_fd("pipex: ", STDERR);
-		ft_putstr_fd("command not found: ", STDERR);
 		ft_putstr_fd(cmd_saver.cmd2[0], STDERR);
+		ft_putstr_fd(": command not found: ", STDERR);
 		ft_putstr_fd("\n", STDERR);
-		return (0);
+		exit(1);
 	}
 	if (execve(cmd_saver.path, cmd_saver.cmd2, envp) == -1)
 		print_error(0, 0, 0);
@@ -87,12 +87,12 @@ int	main(int argc, char **argv, char **envp)
 			exit(!print_error(0, 0, 0));
 		if (pipe_info.pid2 != 0)
 			excute_parent_process(pipe_info);
-		if (pipe_info.pid2 == 0 && !excute_cmd1(pipe_info, envp, argv))
+		if (pipe_info.pid2 == 0 && !excute_cmd2(pipe_info, envp, argv))
 			exit(!print_error(0, 0, 0));
 	}
 	else
 	{
-		if (!excute_cmd2(pipe_info, envp, argv))
+		if (!excute_cmd1(pipe_info, envp, argv))
 			exit(!print_error(0, 0, 0));
 	}
 }

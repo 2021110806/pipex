@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjeon2 <minjeon2@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: minjeon2 <qwer10897@naver.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 14:48:43 by minjeon2          #+#    #+#             */
-/*   Updated: 2023/03/21 21:52:40 by minjeon2         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:38:53 by minjeon2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -36,5 +37,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		s_i++;
 	}
 	return_value[return_value_i] = '\0';
+	free((char *)s1);
 	return (return_value);
 }

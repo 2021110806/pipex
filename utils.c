@@ -6,7 +6,7 @@
 /*   By: minjeon2 <qwer10897@naver.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 03:33:20 by minjeon2          #+#    #+#             */
-/*   Updated: 2023/07/12 03:35:17 by minjeon2         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:39:20 by minjeon2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	set_path(char **envp, t_args_saver *args_saver, int cmd)
 	i = 0;
 	while (path_list[i])
 	{
-		target_path = ft_strjoin("/", path_list[i]);
+		target_path = ft_strjoin(ft_strdup("/"), path_list[i]);
 		target_path = ft_strjoin(target_path, "/");
 		if (cmd == 1)
 			target_path = ft_strjoin(target_path, args_saver -> cmd1[0]);
